@@ -21,8 +21,11 @@ def extract_product_divs(html):
 
     return product_divs
 
+def item_class():
+     item_class = input('Enter the name of class : ')
+     return item_class
 
-def extract_images(product_divs):
+def extract_images(product_divs, path):
 
     # just a wrapper to iterate each product and extract img-link
 
@@ -35,19 +38,19 @@ def extract_images(product_divs):
 
             img_link = prod.find('img').get('src')
 
-            download_img(img_link, uid)   # download img and saves the image
+            download_img(img_link, uid, path)   #z download img and saves the image
 
         except:
             print(uid)   # products for which image is failed to download
             continue
 
 
-def download_img(img_url, uid):
+def download_img(img_url, uid, path):
 
     # it will store elements in the images folder. make sure it already exists !!!
     img = requests.get(img_url).content
 
-    with open(f'output/{uid}.jpg', 'wb') as f:
+    with open(f'/home/cenk/Documents/dataTest/{path}/{uid}.jpg', 'wb') as f:
         f.write(img)
 
 
@@ -60,13 +63,14 @@ def input_details():
     '''
     print('\nEnter the Details\n')
     item_name = input('Enter the name of product to be searched : ')
-
     if not item_name:
         # without product name, we cannot scrape anything...
         return -1
 
     num_pages = input(
         'Enter the number of pages to be traversed. (default: 10)')
+
+    item_class = input('Enter the name of class (ceket, esofman, gomlek, kazak, pantolon, sort, sweat, tisort, yelek) : ')
 
     if not num_pages:
         num_pages = 10  # default
@@ -81,7 +85,7 @@ def input_details():
 
     print('-' * 50)
 
-    return item_name, num_pages
+    return item_name, num_pages, item_class
 
 
 def print_details(count, pages, completed=False):
@@ -114,7 +118,7 @@ def main():
     if details == -1:
         sys.exit('Exiting Since product name is not entered !!')
 
-    item_name, num_pages = details[0], details[1]
+    item_name, num_pages, path = details[0], details[1], details[2]
     
     ama_search = Amazon()  # instantiate amazon search class
     pg_src = ama_search.search_text(item_name)
@@ -133,7 +137,7 @@ def main():
 
 
         # will download all the images of extracted products
-        extract_images(product_divs)
+        extract_images(product_divs, path)
 
         # Inc the prods count
         count_products += len(product_divs)

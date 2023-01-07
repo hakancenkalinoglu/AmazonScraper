@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 class Amazon:
     def __init__(self):
         self.item = None
-        self.base_url = 'https://www.amazon.in'
+        self.base_url = 'https://www.amazon.com/'
         self.browser = webdriver.Chrome()
 
     def search_text(self, item):

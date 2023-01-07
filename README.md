@@ -1,6 +1,5 @@
 # amazon-product-images-downloader
-Given a product name, the python program downloads all the images. This includes pagenation also.
-
+Given a product name and class name, the python program downloads all the images. This includes pagenation also.
 ## Description 
 
 Often times, we need to download all the images of products. These images can be useful to gather data for 
